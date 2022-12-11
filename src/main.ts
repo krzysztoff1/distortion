@@ -87,14 +87,13 @@ async function init() {
   textMesh.position.set(-(SPHERE_RADIUS * 2), 0, -(SPHERE_RADIUS * 2));
   scene.add(textMesh);
 
-  window.requestAnimationFrame(function render() {
+  function animateSphereRotation() {
     mainSphere.rotation.x += 0.01;
     mainSphere.rotation.y += 0.009;
     mainSphere.rotation.z -= 0.001;
+  }
 
-    renderer.render(scene, camera);
-    window.requestAnimationFrame(render);
-  });
+  renderWithComposer(renderer, scene, camera, animateSphereRotation);
 
   window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
