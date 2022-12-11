@@ -24,7 +24,7 @@ async function init() {
   }
 
   const clearcoatNormal = await loadTexture(
-    "public/xvGB-Scratched_gold_01_1K_Normal.png"
+    "/xvGB-Scratched_gold_01_1K_Normal.png"
   );
 
   const material = new THREE.MeshPhysicalMaterial({
