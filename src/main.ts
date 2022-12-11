@@ -3,6 +3,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { createCamera, createRenderer, loadTexture } from "./utils";
 import { createText } from "./text";
 import { isDev } from "./constants";
+import { renderWithComposer } from "./postProcessing";
 
 import "./style.css";
 
@@ -38,7 +39,7 @@ async function init() {
   });
 
   material.onBeforeCompile = (shader) => {
-    shader.uniforms.grain = { value: 0.3 };
+    shader.uniforms.grain = { value: 0.6 };
     shader.uniforms.grainSize = { value: 0.4 };
 
     shader.vertexShader = `
@@ -46,20 +47,15 @@ async function init() {
       uniform float grainSize;
       ${shader.vertexShader}
     `;
+
     shader.vertexShader = shader.vertexShader.replace(
       "#include <begin_vertex>",
       `
         vec3 transformed = vec3( position );  
-        transformed += grain * (sin(position.x * grainSize) + sin(position.y * grainSize) + sin(position.z * grainSize));
+        transformed += grain * (sin(position.x * grainSize) + sin(position.y * grainSize * 1.2) + sin(position.z * grainSize));
         transformed += grain * (sin(position.x * grainSize) + sin(position.y * grainSize) + sin(position.z * grainSize));
       `
     );
-
-    shader.fragmentShader = `
-      uniform float grain;
-      uniform float grainSize;
-      ${shader.fragmentShader}
-    `;
   };
 
   const mainSphere = new THREE.Mesh(
